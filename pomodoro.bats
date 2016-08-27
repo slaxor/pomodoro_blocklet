@@ -84,6 +84,14 @@ teardown() {
   assert_match "WORK 1 / 0 of 25" "${output}"
 }
 
+@test "right mouse button from NOTHING after some time" {
+  run ./pomodoro
+  sed -i -e "s/STARTED=.*/STARTED=$(now -26)/g" ${STATUS_FILE}
+  export BLOCK_BUTTON=3
+  run ./pomodoro
+  assert_match "WORK 1 / 0 of 25" "${output}"
+}
+
 @test "right mouse button from WORK in sprint" {
   mkstatus WORK 1 $(now) yes
   run ./pomodoro
