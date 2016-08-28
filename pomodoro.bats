@@ -72,61 +72,53 @@ teardown() {
 
 @test "middle mouse button resets" {
   mkstatus WORK 1 $(now) yes
-  export BLOCK_BUTTON=2
-  run ./pomodoro
+  BLOCK_BUTTON=2 run ./pomodoro
   assert_match "NOTHING / 0 of 0" "${output}"
 }
 
 @test "right mouse button from NOTHING" {
   run ./pomodoro
-  export BLOCK_BUTTON=3
-  run ./pomodoro
+  BLOCK_BUTTON=3 run ./pomodoro
   assert_match "WORK 1 / 0 of 25" "${output}"
 }
 
 @test "right mouse button from NOTHING after some time" {
+  mkstatus NOTHING 1 $(now -1) yes
   run ./pomodoro
-  sed -i -e "s/STARTED=.*/STARTED=$(now -26)/g" ${STATUS_FILE}
-  export BLOCK_BUTTON=3
-  run ./pomodoro
+  BLOCK_BUTTON=3 run ./pomodoro
   assert_match "WORK 1 / 0 of 25" "${output}"
 }
 
 @test "right mouse button from WORK in sprint" {
   mkstatus WORK 1 $(now) yes
   run ./pomodoro
-  export BLOCK_BUTTON=3
-  run ./pomodoro
+  BLOCK_BUTTON=3 run ./pomodoro
   assert_match "WORK 1 / 0 of 25" "${output}"
 }
 
 @test "right mouse button from WORK at the end of the sprint" {
   mkstatus WORK 0 $(now -26) yes
   run ./pomodoro
-  export BLOCK_BUTTON=3
-  run ./pomodoro
+  BLOCK_BUTTON=3 run ./pomodoro
   assert_match "SHORTBREAK / 0 of 5" "${output}"
 }
 
 @test "right mouse button from WORK at the end of the 4th sprint" {
   mkstatus WORK 4 $(now -26) yes
   run ./pomodoro
-  export BLOCK_BUTTON=3
-  run ./pomodoro
+  BLOCK_BUTTON=3 run ./pomodoro
   assert_match "LONGBREAK / 0 of 15" "${output}"
 }
 
 @test "mousewheel up cheats the time positively" {
   mkstatus WORK 1 $(now -5) yes
-  export BLOCK_BUTTON=4
-  run ./pomodoro
+  BLOCK_BUTTON=4 run ./pomodoro
   assert_match "WORK 1 / 6 of 25" "${output}"
 }
 
 @test "mousewheel down cheats the time negatively" {
   mkstatus WORK 1 $(now -5) yes
-  export BLOCK_BUTTON=5
-  run ./pomodoro
+  BLOCK_BUTTON=5 run ./pomodoro
   assert_match "WORK 1 / 4 of 25" "${output}"
 }
 
