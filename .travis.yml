@@ -3,4 +3,9 @@ before_install:
   - git clone https://github.com/sstephenson/bats.git
   - cd bats
   - sudo ./install.sh /usr/local
+  - cd -
+cache:
+  directories:
+  - ./bats
+  - /usr/local
 script: ./pomodoro.bats
