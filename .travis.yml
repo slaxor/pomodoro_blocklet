@@ -1,6 +1,6 @@
 language: c
 before_install:
-  - sudo add-apt-repository ppa:duggan/bats
-  - sudo apt-get update
-  - sudo apt-get install bats
+  - sudo git clone https://github.com/sstephenson/bats.git
+  - sudo cd bats
+  - sudo ./install.sh /usr/local
 script: ./pomodoro.bats
