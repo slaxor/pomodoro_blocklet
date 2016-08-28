@@ -96,7 +96,7 @@ next_period() {
         NOTIFY=yes
       ;;
     esac
-    calc_times
+    start_period
   fi
 }
 
@@ -112,7 +112,6 @@ middle_button() {
 
 right_button() {
   next_period
-  start_period
 }
 
 wheel_up() {
