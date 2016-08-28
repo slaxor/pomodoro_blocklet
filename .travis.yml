@@ -1,6 +1,6 @@
 language: c
 before_install:
-  - sudo git clone https://github.com/sstephenson/bats.git
-  - sudo cd bats
+  - git clone https://github.com/sstephenson/bats.git
+  - cd bats
   - sudo ./install.sh /usr/local
 script: ./pomodoro.bats
