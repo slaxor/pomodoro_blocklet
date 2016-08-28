@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/slaxor/pomodoro_blocklet.svg?branch=master)](https://travis-ci.org/slaxor/pomodoro_blocklet)
+
 # pomodoro_blocklet
 an i3blocklet for pomodoro
 
