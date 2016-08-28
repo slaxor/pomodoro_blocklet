@@ -17,7 +17,7 @@ LONGBREAK=${LONGBREAK:-15}
 STATUS_FILE=${STATUS_FILE:-"/tmp/pomodoro_blocklet_status"}
 
 write_file() {
-  echo -e "TYPE=${TYPE}\nSPRINT=${SPRINT}\nSTARTED=${STARTED}\nNOTIFY=${NOTIFY}" >${STATUS_FILE}
+  echo -e "TYPE=${TYPE}\nSPRINT=${SPRINT}\nSTARTED=${STARTED}\n" >${STATUS_FILE}
 }
 
 if [ ! -f ${STATUS_FILE} ]
@@ -25,7 +25,6 @@ then
   TYPE=${TYPE:-NOTHING}
   SPRINT=${SPRINT:-0}
   STARTED=${STARTED:-$(date +%s)}
-  NOTIFY='no'
   write_file
 fi
 
@@ -75,25 +74,21 @@ next_period() {
         else
           TYPE="SHORTBREAK"
         fi
-        NOTIFY=yes
       ;;
 
       SHORTBREAK)
         ((SPRINT++))
         TYPE="WORK"
-        NOTIFY=yes
       ;;
 
       LONGBREAK)
         SPRINT=1
         TYPE="WORK"
-        NOTIFY=yes
       ;;
 
       *)
         TYPE="WORK"
         SPRINT=1
-        NOTIFY=yes
       ;;
     esac
     start_period
@@ -102,7 +97,7 @@ next_period() {
 
 reset() {
   rm -f ${STATUS_FILE}
-  unset BLOCK_BUTTON TYPE SPRINT STARTED NOTIFY
+  unset BLOCK_BUTTON TYPE SPRINT STARTED
   exec $0
 }
 
@@ -140,10 +135,16 @@ case ${BLOCK_BUTTON} in
 esac
 
 notify() {
-  [ ${NOTIFY} != 'yes' ] && return
-  next_period
-  MSG="start your ${TYPE}"
-  notify-send --urgency=low --expire-time=60000 "${MSG}"
+  case ${TYPE} in
+    SHORTBREAK|LONGBREAK)
+      notify-send --urgency=low --expire-time=60000 "Start Working"
+    ;;
+    WORK)
+      notify-send --urgency=low --expire-time=60000 "Take a break"
+    ;;
+    *)
+    ;;
+  esac
 }
 
 output() {

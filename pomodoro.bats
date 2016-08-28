@@ -122,6 +122,17 @@ teardown() {
   assert_match "WORK 1 / 4 of 25" "${output}"
 }
 
+@test "must wait for a right click to start the next period" {
+  mkstatus WORK 1 $(now -26) yes
+  run ./pomodoro
+  run ./pomodoro
+  assert_match "WORK 1 / 26 of 25" "${output}"
+  BLOCK_BUTTON=3 run ./pomodoro
+  run ./pomodoro
+  run ./pomodoro
+  assert_match "SHORTBREAK / 0 of 5" "${output}"
+}
+
 @test "the big acceptance" {
   run ./pomodoro
   assert_exit_status 33
